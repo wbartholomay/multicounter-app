@@ -1,9 +1,12 @@
 import { useState, useEffect } from 'react'
 
-function Counter(initialCount = 0, initialIncrementKey = ' ', initialIncrement = 1) {
-  const [count, setCount] = useState(initialCount)
-  const [incrementKey, setIncrementKey] = useState(initialIncrementKey); // Default to space key
-  const [increment, setIncrement] = useState(initialIncrement);
+function Counter() {
+  const [count, setCount] = useState(() => {
+    const savedCount = localStorage.getItem('counter');
+    return savedCount ? parseInt(savedCount) : 0;
+  });
+  const [incrementKey, setIncrementKey] = useState(' ');
+  const [increment, setIncrement] = useState(1);
   
   useEffect(() => {
     const handleKeyDown = (e) => {
@@ -20,6 +23,10 @@ function Counter(initialCount = 0, initialIncrementKey = ' ', initialIncrement =
       window.removeEventListener('keydown', handleKeyDown);
     };
   }, []);
+
+      useEffect(() => {
+    localStorage.setItem('counter', count);
+  }, [count]);
 
   return (
     <div className="card">
