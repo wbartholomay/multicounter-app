@@ -46,7 +46,7 @@ function Counter() {
         </p>
         </div>
         <p>
-          count is {count}
+          {count}
         </p>
         <div style={{ display: 'flex', gap: '10px', justifyContent: 'center' }}>
           <button onClick={(e) => {
