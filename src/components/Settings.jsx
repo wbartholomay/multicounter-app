@@ -1,6 +1,15 @@
 import { Link } from 'react-router-dom';
 
 function Settings() {
+
+    const updateIncrementKey = (e) => {
+        e.preventDefault();
+        localStorage.setItem('incrementKey', e.target[0].value);
+        e.target[0].value = '';
+        console.log('Increment key updated:', e.target[0].value);
+    }
+
+
   return (
     <div className="settings">
       <Link
@@ -19,7 +28,14 @@ function Settings() {
         ← Back to Counter
       </Link>
       <h2>Settings</h2>
-      <p>Settings will be implemented in the future.</p>
+      <form onSubmit={updateIncrementKey}>
+        <input
+          type="text"
+          placeholder="Increment Key"
+          style={{ marginBottom: '10px', width: '20%' }}
+        />
+        <button type="submit">Save</button>
+      </form>
     </div>
   );
 }
