@@ -2,14 +2,16 @@ import { Link } from 'react-router-dom';
 
 function Settings() {
 
-    const updateIncrementKey = (e) => {
+    const updateLocalStorage = (e, localVarName) => {
         e.preventDefault();
-        localStorage.setItem('incrementKey', e.target[0].value);
+        localStorage.setItem(localVarName, e.target[0].value);
+        console.log(localVarName, 'updated:', e.target[0].value);
         e.target[0].value = '';
-        console.log('Increment key updated:', e.target[0].value);
     }
 
 
+    //TODO: Update the input to have change button, then listen for next keypress after change button is clicked
+    //like in control binding in a video game. This may be better suited for the counter page itself.
   return (
     <div className="settings">
       <Link
@@ -28,7 +30,7 @@ function Settings() {
         ← Back to Counter
       </Link>
       <h2>Settings</h2>
-      <form onSubmit={updateIncrementKey}>
+      <form onSubmit={(e) => updateLocalStorage(e, 'incrementKey')}>
         <input
           type="text"
           placeholder="Increment Key"

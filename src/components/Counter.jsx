@@ -5,7 +5,7 @@ function Counter() {
     const savedCount = localStorage.getItem('counter');
     return savedCount ? parseInt(savedCount) : 0;
   });
-  const [incrementKey, setIncrementKey] = useState(' ');
+  const [incrementKey, setIncrementKey] = useState(localStorage.getItem('incrementKey') || ' ');
   const [decrementKey, setDecrementKey] = useState('Backspace');
   const [increment, setIncrement] = useState(1);
   
