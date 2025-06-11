@@ -1,10 +1,9 @@
-function SetterButton({ localVarName, buttonText, setState }) {
+function SetterButton({ localVarName, buttonText}) {
     const listenForInputAndUpdateLocalStorage = (varName) => {
         const handleOneTimeKeyPress = (e) => {
         localStorage.setItem(varName, e.key);
         
-        
-        setState(e.key);
+
         console.log("Setting ", varName, "to ", e.key)
         
         window.removeEventListener('keydown', handleOneTimeKeyPress);

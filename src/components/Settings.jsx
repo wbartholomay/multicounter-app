@@ -1,4 +1,6 @@
 import { Link } from 'react-router-dom';
+import SetterButton from './SetterButton';
+import EditableInput from './EditableInput';
 
 function Settings() {
 
@@ -29,15 +31,20 @@ function Settings() {
       >
         ← Back to Counter
       </Link>
-      <h2>Settings</h2>
-      <form onSubmit={(e) => updateLocalStorage(e, 'incrementKey')}>
-        <input
-          type="text"
-          placeholder="Increment Key"
-          style={{ marginBottom: '10px', width: '20%' }}
-        />
-        <button type="submit">Save</button>
-      </form>
+      <h2>Settings</h2>      <EditableInput
+        value={Number(localStorage.getItem('increment')) || 1}
+        label={"increment"}
+        onSave={(value) => localStorage.setItem('increment', String(value))}
+      />
+      
+      <SetterButton
+        localVarName={'incrementKey'}
+        buttonText={"Set Increment Key"}
+      />
+      <SetterButton
+        localVarName={'decrementKey'}
+        buttonText={"Set Decrement Key"}
+      />
     </div>
   );
 }

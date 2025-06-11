@@ -7,11 +7,12 @@ function Counter() {
     return savedCount ? parseInt(savedCount) : 0;
   });
   const [incrementKey, setIncrementKey] = useState(localStorage.getItem('incrementKey') || ' ');
-  const [decrementKey, setDecrementKey] = useState('Backspace');
-  const [increment, setIncrement] = useState(1);
+  const [decrementKey, setDecrementKey] = useState(localStorage.getItem('decrementKey') || 'Backspace');
+  const [increment, setIncrement] = useState(Number(localStorage.getItem('increment')) || 1);
 
   useEffect(() => {
     const handleKeyDown = (e) => {
+      console.log(typeof increment)
       console.log("Key pressed:", e.key, "Decrement Key:", decrementKey, "Increment Key:", incrementKey);
       if (e.key === incrementKey) {
         setCount(count => count + increment);
@@ -43,11 +44,6 @@ function Counter() {
         <p>
           Increment Key - {incrementKey}
         </p>
-        <SetterButton
-        localVarName={'incrementKey'}
-        setState={setIncrementKey}
-        buttonText={"Set Increment Key"}
-         />
         <p>
           Decrement Key - {decrementKey}
         </p>
