@@ -3,15 +3,6 @@ import SetterButton from './SetterButton';
 import EditableInput from './EditableInput';
 
 const Settings: React.FC = () => {
-  const updateLocalStorage = (e: React.FormEvent<HTMLFormElement>, localVarName: string) => {
-    e.preventDefault();
-    const target = e.target as HTMLFormElement;
-    const input = target[0] as HTMLInputElement;
-    localStorage.setItem(localVarName, input.value);
-    console.log(localVarName, 'updated:', input.value);
-    input.value = '';
-  }
-
   return (
     <div className="settings">
       <Link
