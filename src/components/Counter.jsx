@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react'
+import SetterButton from './SetterButton';
 
 function Counter() {
   const [count, setCount] = useState(() => {
@@ -8,7 +9,7 @@ function Counter() {
   const [incrementKey, setIncrementKey] = useState(localStorage.getItem('incrementKey') || ' ');
   const [decrementKey, setDecrementKey] = useState('Backspace');
   const [increment, setIncrement] = useState(1);
-  
+
   useEffect(() => {
     const handleKeyDown = (e) => {
       console.log("Key pressed:", e.key, "Decrement Key:", decrementKey, "Increment Key:", incrementKey);
@@ -26,11 +27,12 @@ function Counter() {
     return () => {
       window.removeEventListener('keydown', handleKeyDown);
     };
-  }, []);
+  }, [incrementKey]);
 
       useEffect(() => {
     localStorage.setItem('counter', count);
   }, [count]);
+  
   return (
     <div className="card">
       <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
@@ -41,6 +43,11 @@ function Counter() {
         <p>
           Increment Key - {incrementKey}
         </p>
+        <SetterButton
+        localVarName={'incrementKey'}
+        setState={setIncrementKey}
+        buttonText={"Set Increment Key"}
+         />
         <p>
           Decrement Key - {decrementKey}
         </p>
