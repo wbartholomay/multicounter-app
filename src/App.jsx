@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom'
 import './App.css'
-import Counter from './components/Counter'
+import CounterMain from './components/CounterMain'
 import Settings from './components/Settings'
 
 function App() {
@@ -31,7 +31,7 @@ function App() {
         </Link>
 
         <Routes>
-          <Route path="/" element={<Counter />} />
+          <Route path="/" element={<CounterMain />} />
           <Route path="/settings" element={<Settings />} />
         </Routes>
       </div>

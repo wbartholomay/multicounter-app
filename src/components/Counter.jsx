@@ -1,79 +1,169 @@
-import { useState, useEffect } from 'react'
-import SetterButton from './SetterButton';
+import { useState, useEffect } from "react";
+import SetterButton from "./SetterButton";
 
-function Counter() {
-  const [count, setCount] = useState(() => {
-    const savedCount = localStorage.getItem('counter');
-    return savedCount ? parseInt(savedCount) : 0;
-  });
-  const [incrementKey, setIncrementKey] = useState(localStorage.getItem('incrementKey') || ' ');
-  const [decrementKey, setDecrementKey] = useState(localStorage.getItem('decrementKey') || 'Backspace');
-  const [increment, setIncrement] = useState(Number(localStorage.getItem('increment')) || 1);
+function Counter({ counter, onUpdate }) {
+    const [count, setCount] = useState(counter.count);
+    const [isEditing, setIsEditing] = useState(false);
+    const [editValues, setEditValues] = useState({
+        increment: counter.increment,
+        incrementKey: counter.incrementKey,
+        decrementKey: counter.decrementKey,
+    });
 
-  useEffect(() => {
-    const handleKeyDown = (e) => {
-      console.log(typeof increment)
-      console.log("Key pressed:", e.key, "Decrement Key:", decrementKey, "Increment Key:", incrementKey);
-      if (e.key === incrementKey) {
-        setCount(count => count + increment);
-      }
-      else if (e.key === decrementKey) {
-        setCount(count => count - increment);
-      }
+    const toggleEditing = () => {
+        if (isEditing) {
+            onUpdate && onUpdate(counter.id, editValues);
+        } else {
+            setEditValues({
+                increment: counter.increment,
+                incrementKey: counter.incrementKey,
+                decrementKey: counter.decrementKey,
+            });
+        }
+        setIsEditing(!isEditing);
     };
 
-    window.addEventListener('keydown', handleKeyDown);
-
-    // Cleanup function to remove event listener
-    return () => {
-      window.removeEventListener('keydown', handleKeyDown);
+    const incrementCount = () => {
+        console.log("incrementing count");
+        setCount(count + counter.increment);
+        onUpdate && onUpdate(counter.id, { count: count + counter.increment });
     };
-  }, [incrementKey]);
 
-      useEffect(() => {
-    localStorage.setItem('counter', count);
-  }, [count]);
-  
-  return (
-    <div className="card">
-      <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
-        <div style={{ display: 'flex', gap: '30px', justifyContent: 'center' }}>
-        <p>
-          Increment - {increment}
-        </p>
-        <p>
-          Increment Key - {incrementKey}
-        </p>
-        <p>
-          Decrement Key - {decrementKey}
-        </p>
+    const decrementCount = () => {
+        console.log("decrementing count");
+        setCount(count - counter.increment);
+        onUpdate && onUpdate(counter.id, { count: count - counter.increment });
+    };
+
+    const resetCount = () => {
+        console.log("resetting count");
+        setCount(0);
+        onUpdate && onUpdate(counter.id, { count: 0 });
+    };
+
+    useEffect(() => {
+        const handleKeyDown = (e) => {
+            console.log(
+                "Key pressed:",
+                e.key,
+                "Decrement Key:",
+                counter.decrementKey,
+                "Increment Key:",
+                counter.incrementKey
+            );
+            if (e.key === counter.incrementKey) {
+                incrementCount();
+            } else if (e.key === counter.decrementKey) {
+                decrementCount();
+            }
+        };
+
+        window.addEventListener("keydown", handleKeyDown);
+
+        return () => {
+            window.removeEventListener("keydown", handleKeyDown);
+        };
+    }, [counter.incrementKey, counter.decrementKey, counter.count]);
+
+    return (
+        <div className="card">
+            <div
+                style={{
+                    display: "flex",
+                    flexDirection: "column",
+                    gap: "10px",
+                }}
+            >
+                <div
+                    style={{
+                        display: "flex",
+                        gap: "30px",
+                        justifyContent: "center",
+                    }}
+                >
+                    {isEditing ? (
+                        <>
+                            <input
+                                type="number"
+                                value={editValues.increment}
+                                onChange={(e) =>
+                                    setEditValues((prev) => ({
+                                        ...prev,
+                                        increment: parseInt(e.target.value),
+                                    }))
+                                }
+                            />
+                            <input
+                                value={editValues.incrementKey}
+                                onChange={(e) =>
+                                    setEditValues((prev) => ({
+                                        ...prev,
+                                        incrementKey: e.target.value,
+                                    }))
+                                }
+                            />
+                           <input
+                                value={editValues.decrementKey}
+                                onChange={(e) =>
+                                    setEditValues((prev) => ({
+                                        ...prev,
+                                        decrementKey: e.target.value,
+                                    }))
+                                }
+                            />
+                        </>
+                    ) : (
+                        <>
+                            <p>Increment - {counter.increment}</p>
+                            <p>Increment Key - {counter.incrementKey}</p>
+                            <p>Decrement Key - {counter.decrementKey}</p>
+                        </>
+                    )}
+                    <button
+                        onClick={(e) => {
+                            toggleEditing();
+                            e.currentTarget.blur();
+                        }}
+                    >
+                        {isEditing ? "Save" : "Edit"}
+                    </button>
+                </div>
+                <p>{count}</p>
+                <div
+                    style={{
+                        display: "flex",
+                        gap: "10px",
+                        justifyContent: "center",
+                    }}
+                >
+                    <button
+                        onClick={(e) => {
+                            incrementCount();
+                            e.currentTarget.blur();
+                        }}
+                    >
+                        +
+                    </button>
+                    <button
+                        onClick={(e) => {
+                            decrementCount();
+                            e.currentTarget.blur();
+                        }}
+                    >
+                        -
+                    </button>
+                    <button
+                        onClick={(e) => {
+                            resetCount();
+                            e.currentTarget.blur();
+                        }}
+                    >
+                        Reset
+                    </button>
+                </div>
+            </div>
         </div>
-        <p>
-          {count}
-        </p>
-        <div style={{ display: 'flex', gap: '10px', justifyContent: 'center' }}>
-          <button onClick={(e) => {
-            setCount(count + increment);
-            e.currentTarget.blur();
-          }}>
-            +
-          </button>
-          <button onClick={(e) => {
-            setCount(count - increment);
-            e.currentTarget.blur();
-          }}>
-            -
-          </button>
-          <button onClick={(e) => {
-            setCount(0);
-            e.currentTarget.blur();
-          }}>
-            Reset
-          </button>
-        </div>
-      </div>
-    </div>
-  )
+    );
 }
 
-export default Counter
+export default Counter;
