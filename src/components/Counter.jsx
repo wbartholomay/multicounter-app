@@ -1,16 +1,17 @@
 import { useState, useEffect } from 'react'
+import SetterButton from './SetterButton';
 
-const Counter: React.FC = () => {
-  const [count, setCount] = useState<number>(() => {
+function Counter() {
+  const [count, setCount] = useState(() => {
     const savedCount = localStorage.getItem('counter');
     return savedCount ? parseInt(savedCount) : 0;
   });
-  const [incrementKey, setIncrementKey] = useState<string>(localStorage.getItem('incrementKey') || ' ');
-  const [decrementKey, setDecrementKey] = useState<string>(localStorage.getItem('decrementKey') || 'Backspace');
-  const [increment, setIncrement] = useState<number>(Number(localStorage.getItem('increment')) || 1);
+  const [incrementKey, setIncrementKey] = useState(localStorage.getItem('incrementKey') || ' ');
+  const [decrementKey, setDecrementKey] = useState(localStorage.getItem('decrementKey') || 'Backspace');
+  const [increment, setIncrement] = useState(Number(localStorage.getItem('increment')) || 1);
 
   useEffect(() => {
-    const handleKeyDown = (e: KeyboardEvent) => {
+    const handleKeyDown = (e) => {
       console.log(typeof increment)
       console.log("Key pressed:", e.key, "Decrement Key:", decrementKey, "Increment Key:", incrementKey);
       if (e.key === incrementKey) {
@@ -23,24 +24,33 @@ const Counter: React.FC = () => {
 
     window.addEventListener('keydown', handleKeyDown);
 
+    // Cleanup function to remove event listener
     return () => {
       window.removeEventListener('keydown', handleKeyDown);
     };
-  }, [incrementKey, decrementKey, increment]);
+  }, [incrementKey]);
 
-  useEffect(() => {
-    localStorage.setItem('counter', String(count));
+      useEffect(() => {
+    localStorage.setItem('counter', count);
   }, [count]);
   
   return (
     <div className="card">
       <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
         <div style={{ display: 'flex', gap: '30px', justifyContent: 'center' }}>
-          <p>Increment - {increment}</p>
-          <p>Increment Key - {incrementKey}</p>
-          <p>Decrement Key - {decrementKey}</p>
+        <p>
+          Increment - {increment}
+        </p>
+        <p>
+          Increment Key - {incrementKey}
+        </p>
+        <p>
+          Decrement Key - {decrementKey}
+        </p>
         </div>
-        <p>{count}</p>
+        <p>
+          {count}
+        </p>
         <div style={{ display: 'flex', gap: '10px', justifyContent: 'center' }}>
           <button onClick={(e) => {
             setCount(count + increment);
@@ -63,7 +73,7 @@ const Counter: React.FC = () => {
         </div>
       </div>
     </div>
-  );
+  )
 }
 
-export default Counter;
+export default Counter

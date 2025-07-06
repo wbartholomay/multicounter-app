@@ -2,16 +2,18 @@ import { Link } from 'react-router-dom';
 import SetterButton from './SetterButton';
 import EditableInput from './EditableInput';
 
-const Settings: React.FC = () => {
-  const updateLocalStorage = (e: React.FormEvent<HTMLFormElement>, localVarName: string) => {
-    e.preventDefault();
-    const target = e.target as HTMLFormElement;
-    const input = target[0] as HTMLInputElement;
-    localStorage.setItem(localVarName, input.value);
-    console.log(localVarName, 'updated:', input.value);
-    input.value = '';
-  }
+function Settings() {
 
+    const updateLocalStorage = (e, localVarName) => {
+        e.preventDefault();
+        localStorage.setItem(localVarName, e.target[0].value);
+        console.log(localVarName, 'updated:', e.target[0].value);
+        e.target[0].value = '';
+    }
+
+
+    //TODO: Update the input to have change button, then listen for next keypress after change button is clicked
+    //like in control binding in a video game. This may be better suited for the counter page itself.
   return (
     <div className="settings">
       <Link
@@ -29,19 +31,19 @@ const Settings: React.FC = () => {
       >
         ← Back to Counter
       </Link>
-      <h2>Settings</h2>
-      <EditableInput
+      <h2>Settings</h2>      <EditableInput
         value={Number(localStorage.getItem('increment')) || 1}
-        label="increment"
+        label={"increment"}
         onSave={(value) => localStorage.setItem('increment', String(value))}
       />
+      
       <SetterButton
-        localVarName="incrementKey"
-        buttonText="Set Increment Key"
+        localVarName={'incrementKey'}
+        buttonText={"Set Increment Key"}
       />
       <SetterButton
-        localVarName="decrementKey"
-        buttonText="Set Decrement Key"
+        localVarName={'decrementKey'}
+        buttonText={"Set Decrement Key"}
       />
     </div>
   );
