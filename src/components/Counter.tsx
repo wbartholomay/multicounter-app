@@ -5,9 +5,9 @@ const Counter: React.FC = () => {
     const savedCount = localStorage.getItem('counter');
     return savedCount ? parseInt(savedCount) : 0;
   });
-  const [incrementKey] = useState<string>(localStorage.getItem('incrementKey') || ' ');
-  const [decrementKey] = useState<string>(localStorage.getItem('decrementKey') || 'Backspace');
-  const [increment] = useState<number>(Number(localStorage.getItem('increment')) || 1);
+  const [incrementKey, setIncrementKey] = useState<string>(localStorage.getItem('incrementKey') || ' ');
+  const [decrementKey, setDecrementKey] = useState<string>(localStorage.getItem('decrementKey') || 'Backspace');
+  const [increment, setIncrement] = useState<number>(Number(localStorage.getItem('increment')) || 1);
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
