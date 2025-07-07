@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
-import SetterButton from "./SetterButton";
+import DeleteButton from "./DeleteButton";
 
-function Counter({ counter, onUpdate }) {
+function Counter({ counter, onUpdate, onDelete }) {
     const [count, setCount] = useState(counter.count);
     const [isEditing, setIsEditing] = useState(false);
     const [editValues, setEditValues] = useState({
@@ -102,7 +102,7 @@ function Counter({ counter, onUpdate }) {
                                     }))
                                 }
                             />
-                           <input
+                            <input
                                 value={editValues.decrementKey}
                                 onChange={(e) =>
                                     setEditValues((prev) => ({
@@ -127,6 +127,7 @@ function Counter({ counter, onUpdate }) {
                     >
                         {isEditing ? "Save" : "Edit"}
                     </button>
+                    <DeleteButton counter={counter} onDelete={onDelete} />
                 </div>
                 <p>{count}</p>
                 <div
